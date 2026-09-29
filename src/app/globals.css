@@ -1,0 +1,1244 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", "Courier New", monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-elevated: var(--elevated);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-secondary: var(--secondary);
+  --color-code: var(--code);
+  --color-focus: var(--focus);
+
+  --color-accent-cyan: var(--accent-cyan);
+  --color-accent-violet: var(--accent-violet);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-green: var(--accent-green);
+  --color-accent-yellow: var(--accent-yellow);
+
+  --color-skill-panel: var(--skill-panel);
+  --color-skill-panel-border: var(--skill-panel-border);
+  --color-skill-tag: var(--skill-tag);
+  --color-skill-tag-hover: var(--skill-tag-hover);
+  --color-skill-tag-border: var(--skill-tag-border);
+}
+
+:root {
+  color-scheme: light;
+
+  /* Default Cyber Glass accent. Declared here (earliest, lowest-specificity
+     token block) so that every per-card/per-lane accent class further down the
+     file (.hud-card-*, .skill-lane-*, .cyber-glass-*) overrides it. */
+  --hud-accent: var(--accent);
+
+  --background: #f6f7f9;
+  --foreground: #171a1f;
+  --muted-foreground: #5c6572;
+  --card: #ffffff;
+  --elevated: #ffffff;
+  --muted: #eef1f5;
+  --border: #e3e7ee;
+  --accent: #0e7490;
+  --accent-foreground: #ffffff;
+  --secondary: #059669;
+  --grid: rgba(30, 41, 59, 0.07);
+  --code: #f1f3f7;
+  --focus: #0891b2;
+
+  /* Category accents (light) */
+  --accent-cyan: #0e7490;
+  --accent-violet: #6d28d9;
+  --accent-blue: #1d4ed8;
+  --accent-green: #059669;
+  --accent-yellow: #b45309;
+
+  /* Technical skills (light): soft cool-neutral surface + white pills */
+  --skill-panel: #eef2f5;
+  --skill-panel-border: #dce4ed;
+  --skill-tag: #ffffff;
+  --skill-tag-hover: #f1f6fa;
+  --skill-tag-border: #d2dae6;
+}
+
+.dark {
+  color-scheme: dark;
+
+  /* Rich deep-slate rather than pitch black: a flat #000-ish field has no head
+     room left for the circuit traces and ambient glows to read as light. The
+     slight blue lift also stops the orbs from looking like grey smudges. */
+  --background: #080c14;
+  --foreground: #e6e9ef;
+  --muted-foreground: #98a1b3;
+  --card: #0e131d;
+  --elevated: #131a26;
+  --muted: #151c29;
+  --border: #232c3d;
+  --accent: #22d3ee;
+  --accent-foreground: #07171c;
+  --secondary: #34d399;
+  --grid: rgba(148, 163, 184, 0.08);
+  --code: #0c1120;
+  --focus: #22d3ee;
+
+  /* Category accents (dark) */
+  --accent-cyan: #22d3ee;
+  --accent-violet: #a78bfa;
+  --accent-blue: #60a5fa;
+  --accent-green: #34d399;
+  --accent-yellow: #fbbf24;
+
+  /* Technical skills (dark): deep neutral surface + elevated pills */
+  --skill-panel: #0c1322;
+  --skill-panel-border: #20293c;
+  --skill-tag: #151d2c;
+  --skill-tag-hover: #1c2639;
+  --skill-tag-border: #27334a;
+}
+
+/* ------------------------------------------------------------------------
+   Spacing system tokens
+   - section top/bottom: `--space-section-y` (mobile/tablet/desktop)
+   - card grid gaps + card inner padding
+   - section header -> content gap: `--space-section-head`
+   ------------------------------------------------------------------------ */
+:root {
+  --space-section-y: 2.5rem;
+  --space-card-gap: 1rem;
+  --space-card-gap-lg: 1.25rem;
+  --space-card-pad: 1.5rem;
+  --space-card-pad-lg: 2rem;
+  --space-section-head: 3rem;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+    overflow-wrap: break-word;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--accent) 22%, transparent);
+    color: var(--foreground);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* ------------------------------------------------------------------------
+   Reusable layout primitives (design-system foundation)
+   - .section-pad   : section vertical rhythm (tokens above)
+   - .card-grid-2   : 1 col -> 2 cols (sm)
+   - .card-grid-3   : 1 col -> 2 cols (sm) -> 3 cols (lg)
+   - .grid-12       : 12-column conceptual grid for asymmetric splits
+                     (combine with Tailwind col-span-* for 4/8, 6/6, 5/7, 3/9)
+   - .section-title / .section-subtitle : section header typography
+   ------------------------------------------------------------------------ */
+
+@layer components {
+
+  .section-pad {
+    padding-block: var(--space-section-y);
+  }
+
+  .card-grid-2,
+  .card-grid-3 {
+    display: grid;
+    gap: var(--space-card-gap);
+    grid-template-columns: 1fr;
+  }
+
+  /* 12-column conceptual grid */
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-card-gap);
+  }
+
+  /* Typography system: reusable section-header classes */
+  .section-title {
+    @apply text-3xl font-semibold tracking-tight text-foreground sm:text-4xl;
+  }
+
+  .section-subtitle {
+    @apply mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg;
+  }
+
+  /* Compact monospace technical chip */
+  .mono-chip {
+    @apply inline-flex items-center rounded border border-border bg-muted px-2 py-1 font-mono text-[10px] uppercase leading-none tracking-[0.06em] text-muted-foreground;
+  }
+}
+
+@media (min-width: 640px) {
+  :root {
+    --space-section-y: 3rem;
+    --space-card-pad: 2rem;
+  }
+
+  .section-pad {
+    padding-block: var(--space-section-y);
+  }
+
+  .card-grid-2,
+  .card-grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-card-gap-lg);
+  }
+
+  .grid-12 {
+    gap: var(--space-card-gap-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --space-section-y: 3.5rem;
+  }
+
+  .section-pad {
+    padding-block: var(--space-section-y);
+  }
+
+  .card-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Subtle technical grid backdrop */
+.grid-pattern {
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 75%);
+}
+
+/* Very subtle accent glow for section heroes */
+.section-glow {
+  background: radial-gradient(
+    640px 320px at 18% 0%,
+    color-mix(in srgb, var(--accent) 10%, transparent),
+    transparent 70%
+  );
+}
+
+/* Gentle entrance */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* ------------------------------------------------------------------------
+   Technical skills: horizontal marquee lanes
+   - the track is duplicated internally (REPEATS) and translated by a fixed
+     fraction of its own width, producing a seamless infinite loop.
+   - marquee clips ONLY inside .marquee-viewport (overflow hidden) so it can
+     never widen the document.
+   - .marquee-static is the accessible wrapped layout shown under
+      prefers-reduced-motion; the animated copy is hidden from screen readers.
+   ------------------------------------------------------------------------ */
+.marquee-viewport {
+  overflow: hidden;
+}
+
+.marquee-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: 0.625rem;
+  will-change: transform;
+}
+
+.marquee-track--right-to-left {
+  animation: tech-marquee-left var(--marquee-duration, 44s) linear infinite;
+}
+
+.marquee-track--left-to-right {
+  animation: tech-marquee-right var(--marquee-duration, 44s) linear infinite;
+}
+
+.marquee-static {
+  display: none;
+}
+
+@keyframes tech-marquee-left {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-25%);
+  }
+}
+
+@keyframes tech-marquee-right {
+  from {
+    transform: translateX(-25%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-animated {
+    display: none !important;
+  }
+
+  .marquee-track {
+    animation: none !important;
+  }
+
+  .marquee-static {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+
+/* ------------------------------------------------------------------------
+   Experience: layered architecture
+   - .arch-scene owns the perspective; .arch-stack preserves it.
+   - .arch-plate is a slab: a tinted face, a 3-step stacked box-shadow
+     extrusion (the "offset plates" edge) and a dimmer ::after outline plate
+     offset down-right, all tinted with the per-layer --arch-accent.
+   - ::before draws a dashed blueprint frame inside each plate.
+   - --arch-depth pushes each plate along Z so the stack recedes in real
+     perspective (top layer closest to the viewer, no rotation, so no text
+     distortion). Without perspective support it degrades to a flat stack.
+   - .arch-grid / .arch-glow are the technical grid + accent halo behind it.
+   - .exp-flow-dot travels the connector between two layers, staggered by
+      --flow-delay (CSS only, no client JS).
+   ------------------------------------------------------------------------ */
+.arch-grid {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--accent) 8%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--accent) 8%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 18px 18px;
+  -webkit-mask-image: radial-gradient(
+    ellipse 78% 64% at 50% 50%,
+    black 18%,
+    transparent 78%
+  );
+  mask-image: radial-gradient(ellipse 78% 64% at 50% 50%, black 18%, transparent 78%);
+}
+
+.arch-glow {
+  background:
+    radial-gradient(
+      130% 52% at 50% 0%,
+      color-mix(in srgb, var(--accent) 15%, transparent),
+      transparent 72%
+    ),
+    radial-gradient(
+      110% 46% at 50% 100%,
+      color-mix(in srgb, var(--accent) 9%, transparent),
+      transparent 74%
+    );
+}
+
+.arch-scene {
+  perspective: 1500px;
+  perspective-origin: 50% 45%;
+}
+
+.arch-stack {
+  transform-style: preserve-3d;
+}
+
+.arch-plate {
+  --arch-accent: var(--accent-cyan);
+  --arch-depth: 0px;
+  position: relative;
+  z-index: 0;
+  transform: translateZ(var(--arch-depth));
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--arch-accent) 11%, var(--card)) 0%,
+    color-mix(in srgb, var(--arch-accent) 2%, var(--card)) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 0 color-mix(in srgb, var(--arch-accent) 30%, transparent),
+    0 1px 0 0 color-mix(in srgb, var(--arch-accent) 32%, transparent),
+    0 2px 0 0 color-mix(in srgb, var(--arch-accent) 19%, transparent),
+    0 3px 0 0 color-mix(in srgb, var(--arch-accent) 10%, transparent),
+    0 18px 26px -18px color-mix(in srgb, var(--arch-accent) 85%, transparent);
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* dimmer offset plate behind the slab */
+.arch-plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid color-mix(in srgb, var(--arch-accent) 24%, transparent);
+  border-radius: inherit;
+  transform: translate(6px, 6px);
+  transition: transform 0.3s ease;
+}
+
+/* blueprint frame inside the slab */
+.arch-plate::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px dashed color-mix(in srgb, var(--arch-accent) 15%, transparent);
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+.arch-plate:hover {
+  border-color: color-mix(in srgb, var(--arch-accent) 55%, transparent);
+  box-shadow:
+    inset 0 1px 0 0 color-mix(in srgb, var(--arch-accent) 40%, transparent),
+    0 1px 0 0 color-mix(in srgb, var(--arch-accent) 45%, transparent),
+    0 2px 0 0 color-mix(in srgb, var(--arch-accent) 26%, transparent),
+    0 3px 0 0 color-mix(in srgb, var(--arch-accent) 14%, transparent),
+    0 24px 34px -18px color-mix(in srgb, var(--arch-accent) 95%, transparent);
+}
+
+.arch-plate:hover::after {
+  transform: translate(8px, 8px);
+}
+
+.exp-flow-dot {
+  animation: exp-flow 2.8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation-delay: var(--flow-delay, 0s);
+}
+
+/* ------------------------------------------------------------------------
+   Experience: professional project identity
+   - .project-card carries a restrained per-project accent through
+     --project-accent (cyan/blue/green/yellow/violet): a faint top inner
+     highlight at rest, a tinted border and glow on hover. No neon, and the
+      card keeps the shared dark portfolio surface.
+   ------------------------------------------------------------------------ */
+/* Architecture layer blocks */
+.arch-layer-block {
+  position: relative;
+  z-index: 0;
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--arch-accent, var(--accent)) 9%, var(--card)) 0%,
+    color-mix(in srgb, var(--arch-accent, var(--accent)) 2%, var(--card)) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 0 color-mix(in srgb, var(--arch-accent, var(--accent)) 22%, transparent),
+    0 2px 0 0 color-mix(in srgb, var(--arch-accent, var(--accent)) 16%, transparent),
+    0 4px 0 0 color-mix(in srgb, var(--arch-accent, var(--accent)) 9%, transparent),
+    0 12px 20px -12px color-mix(in srgb, var(--arch-accent, var(--accent)) 40%, transparent);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.arch-layer-block::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid color-mix(in srgb, var(--arch-accent, var(--accent)) 20%, transparent);
+  border-radius: inherit;
+  transform: translate(5px, 5px);
+  transition: transform 0.3s ease;
+}
+
+.arch-layer-block:hover {
+  border-color: color-mix(in srgb, var(--arch-accent, var(--accent)) 50%, transparent);
+}
+
+.arch-layer-block:hover::after {
+  transform: translate(7px, 7px);
+}
+
+.project-card {
+  --project-accent: var(--accent-cyan);
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* ------------------------------------------------------------------------
+   Cyber Glass — HUD card treatment
+   .hud-card: accent-lit border, drawn by the .cyber-glass skin.
+   Zero layout impact — the card only publishes its own semantic accent.
+   ------------------------------------------------------------------------ */
+.hud-card {
+  position: relative;
+}
+
+/* Per-accent HUD cards.
+   These now only publish the card's semantic accent colour; the border
+   illumination, surface depth, ambient glow and HUD corner markers are all
+   derived from --hud-accent by the .cyber-glass skin at the end of this file,
+   so every accent stays consistent automatically. The circuit-board artwork is
+   not on the card at all: it is the single page-level PCB background. */
+.hud-card-cyan {
+  --hud-accent: var(--accent-cyan);
+}
+
+.hud-card-violet {
+  --hud-accent: var(--accent-violet);
+}
+
+.hud-card-blue {
+  --hud-accent: var(--accent-blue);
+}
+
+.hud-card-green {
+  --hud-accent: var(--accent-green);
+}
+
+.hud-card-yellow {
+  --hud-accent: var(--accent-yellow);
+}
+
+/* green + yellow accents publish --hud-accent above */
+
+/* yellow accent publishes --hud-accent above */
+
+/* The HUD corner pad that used to sit on a card's top-left corner is retired
+   with the rest of the card-edge PCB routing: a solder pad welded to a card
+   border is exactly the decoration the global board replaces. */
+
+/* Skill lane accent border illumination */
+.skill-lane-border-cyan  { border-color: rgba(14,116,144,0.45) !important; }
+.skill-lane-border-violet { border-color: rgba(109,40,217,0.45) !important; }
+.skill-lane-border-blue  { border-color: rgba(29,78,216,0.45) !important; }
+.skill-lane-border-green { border-color: rgba(5,150,105,0.45) !important; }
+
+.dark .skill-lane-border-cyan  { border-color: rgba(34,211,238,0.40) !important; }
+.dark .skill-lane-border-violet { border-color: rgba(167,139,250,0.40) !important; }
+.dark .skill-lane-border-blue  { border-color: rgba(96,165,250,0.40) !important; }
+.dark .skill-lane-border-green { border-color: rgba(52,211,153,0.40) !important; }
+
+/* Skill lane hover border brightening */
+.skill-lane-cyan:hover  { border-color: rgba(14,116,144,0.70) !important; }
+.skill-lane-violet:hover { border-color: rgba(109,40,217,0.70) !important; }
+.skill-lane-blue:hover  { border-color: rgba(29,78,216,0.70) !important; }
+.skill-lane-green:hover { border-color: rgba(5,150,105,0.70) !important; }
+
+.dark .skill-lane-cyan:hover  { border-color: rgba(34,211,238,0.70) !important; }
+.dark .skill-lane-violet:hover { border-color: rgba(167,139,250,0.70) !important; }
+.dark .skill-lane-blue:hover  { border-color: rgba(96,165,250,0.70) !important; }
+.dark .skill-lane-green:hover { border-color: rgba(52,211,153,0.70) !important; }
+
+/* Glass surface tint — very subtle top highlight on dark cards */
+.glass-surface {
+  background-image: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.03) 0%,
+    transparent 40%
+  );
+}
+
+.dark .glass-surface {
+  background-image: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.05) 0%,
+    transparent 35%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hud-card::before,
+  .hud-card::after {
+    transition: none;
+  }
+}
+
+/* .cyber-card-glow used to be the entire "Cyber Glass" treatment (a single
+   cyan box-shadow). It is now folded into the .cyber-glass skin at the end of
+   this file, which is accent-driven and adds the border illumination, surface
+   depth and HUD corner markers on top of the same glow. */
+
+/* Skill lane per-accent glows.
+   The lane box-shadow now comes from the .cyber-glass skin, so these rules only
+   publish the lane's semantic accent colour and its hover border. */
+/* cyan lane */
+.skill-lane-cyan {
+  --hud-accent: var(--accent-cyan);
+}
+
+/* violet lane */
+.skill-lane-violet {
+  --hud-accent: var(--accent-violet);
+}
+
+/* blue lane */
+.skill-lane-blue {
+  --hud-accent: var(--accent-blue);
+}
+
+/* green lane */
+.skill-lane-green {
+  --hud-accent: var(--accent-green);
+}
+
+/* Project card per-accent identity.
+   The glow is now owned by the .cyber-glass skin (which reads --project-accent
+   or --hud-accent), so only the accent colour and the hover border remain. */
+.dark .project-card-cyan { --hud-accent: var(--accent-cyan); }
+.dark .project-card-cyan:hover { border-color: rgba(34,211,238,0.60) !important; }
+.dark .project-card-violet { --hud-accent: var(--accent-violet); }
+.dark .project-card-violet:hover { border-color: rgba(167,139,250,0.60) !important; }
+.dark .project-card-blue { --hud-accent: var(--accent-blue); }
+.dark .project-card-blue:hover { border-color: rgba(96,165,250,0.60) !important; }
+.dark .project-card-green { --hud-accent: var(--accent-green); }
+.dark .project-card-green:hover { border-color: rgba(52,211,153,0.60) !important; }
+.dark .project-card-yellow { --hud-accent: var(--accent-yellow); }
+.dark .project-card-yellow:hover { border-color: rgba(251,191,36,0.60) !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cyber-glass,
+  .skill-lane-cyan, .skill-lane-violet, .skill-lane-blue, .skill-lane-green {
+    transition: none;
+  }
+}
+
+@keyframes exp-flow {
+  0% {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(360%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .exp-flow-dot {
+    animation: none !important;
+    opacity: 0;
+  }
+
+  .arch-plate,
+  .arch-plate:hover {
+    transform: none !important;
+  }
+
+  .arch-plate::after,
+  .arch-plate:hover::after {
+    transform: translate(6px, 6px) !important;
+  }
+}
+
+/* ------------------------------------------------------------------------
+   AI Study Assistant: staged product-pipeline reveal
+   - default (no .pipeline-anim): everything visible (no-JS / reduced prep)
+   - .pipeline-anim: stages hidden until .pipeline-active is applied by an
+      IntersectionObserver; each stage reveals with its own --stage-delay.
+   ------------------------------------------------------------------------ */
+.pipeline-anim .pipeline-stage,
+.pipeline-anim .pipeline-connector {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.pipeline-anim.pipeline-active .pipeline-stage,
+.pipeline-anim.pipeline-active .pipeline-connector {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease;
+  transition-delay: var(--stage-delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pipeline-anim .pipeline-stage,
+  .pipeline-anim .pipeline-connector {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ===========================================================================
+   CYBER GLASS / TECH-HUD VISUAL SKIN
+   ---------------------------------------------------------------------------
+   One reusable decorative layer, applied with a single class (.cyber-glass) on
+   top of the EXISTING card. It adds, in order of how it is drawn:
+
+     1. accent-lit border      - the existing 1px border is tinted + lit with
+                                  the card's own semantic accent (no new border)
+     2. technical surface      - two soft radial accent washes
+     3. accent glow            - a soft, tight ambient halo (22px at -6px)
+                                 plus an inset hairline highlight
+     4. corner brackets        - the single bracket set each component already
+                                 renders, now tinted by .hud-bracket so they
+                                 follow the card's semantic accent
+
+   There is no rectangular accent frame anywhere in this skin, and no PCB
+   routing on the card either. The full-length edge rails were removed first
+   (four lines meeting at the corners are a frame by definition), then the
+   card-edge circuit routing and the six edge connectors that went with it.
+   The circuit-board environment is now a single page-level system, drawn once
+   by src/components/ui/PcbSectionBackground.tsx behind the whole portfolio, so
+   the cards are clean content surfaces sitting inside it. The 1px card border
+   is unchanged and remains the only continuous edge.
+
+   Corner brackets are NOT drawn here: each card keeps the single corner-bracket
+   system its component already renders, so nothing is doubled and there is no
+   inner second/third border competing with the real one.
+
+   Everything is CSS-only: no extra DOM, no layout/spacing/padding/dimension or
+   typography change, no new dependencies. Nothing here is positioned, so none
+   of it can affect layout, spacing, text selection or interaction.
+
+   Accent resolution: --hud-accent is declared once in :root (the default) and
+   is otherwise published by the per-card accent classes (.hud-card-*,
+   .skill-lane-*, .project-card-*, .cyber-glass-*), so every colour below stays
+   semantic — a violet card gets a violet wash, a green card green, and so on.
+   Nothing here hardcodes cyan.
+   =========================================================================== */
+
+/* Theme strength. Light mode stays soft/technical; dark mode is where the
+   treatment reads clearly. Values are plain numbers so they are safe to
+   inherit into color-mix() (a var() nested in a custom property would be
+   resolved on :root, where --hud-accent does not exist).
+   --hud-trace / --hud-node / --hud-junction / --hud-edge are the retired
+   routing palette. They are left declared, unchanged, so the token set stays
+   intact and a future pass has the values to hand — the only tier this skin
+   actually paints now is the accent-lit border, the two surface washes
+   (--hud-tint), the inset hairline (--hud-inset) and the ambient halo
+   (--hud-glow). --hud-glow is deliberately the softest of the set: the glow
+   stays a halo and never becomes the thing you look at. */
+:root {
+  --hud-trace-alpha: 58%;
+  --hud-trace-soft-alpha: 36%;
+  --hud-node-alpha: 88%;
+  --hud-halo-alpha: 34%;
+  --hud-junction-alpha: 66%;
+  --hud-edge-alpha: 46%;
+  --hud-edge-hot-alpha: 60%;
+  --hud-inset-alpha: 16%;
+  --hud-glow-alpha: 22%;
+  --hud-tint-alpha: 4%;
+}
+
+.dark {
+  --hud-trace-alpha: 78%;
+  --hud-trace-soft-alpha: 50%;
+  --hud-node-alpha: 98%;
+  --hud-halo-alpha: 62%;
+  --hud-junction-alpha: 88%;
+  --hud-edge-alpha: 78%;
+  --hud-edge-hot-alpha: 96%;
+  --hud-inset-alpha: 34%;
+  --hud-glow-alpha: 44%;
+  --hud-tint-alpha: 9%;
+}
+
+.cyber-glass {
+  /* The card owns its own stacking context, so the z-index applied to its
+     content children below is resolved against the CARD and not against some
+     distant ancestor: without it, any sibling carrying a transform, filter,
+     backdrop-filter, will-change or isolation re-parents the paint order and
+     the decorative overlays stop reading as part of the panel.
+     `position: relative` is declared for determinism (every .cyber-glass host
+     already carries Tailwind's `relative`, so this is a no-op today, not a
+     layout change). Neither affects layout, spacing, padding, size or
+     breakpoints. */
+  position: relative;
+  isolation: isolate;
+
+  /* --hud-accent is NOT declared here on purpose: it is inherited from the
+     :root default or published by the per-card accent class, so this rule can
+     never clobber a card's semantic colour through source order. Every colour
+     mix is resolved HERE (not in the token block above) so each card mixes its
+     own accent. */
+  --hud-trace: color-mix(in srgb, var(--hud-accent) var(--hud-trace-alpha), transparent);
+  --hud-trace-soft: color-mix(in srgb, var(--hud-accent) var(--hud-trace-soft-alpha), transparent);
+  --hud-node: color-mix(in srgb, var(--hud-accent) var(--hud-node-alpha), transparent);
+  --hud-node-core: color-mix(in srgb, #ffffff 72%, var(--hud-accent));
+  --hud-halo: color-mix(in srgb, var(--hud-accent) var(--hud-halo-alpha), transparent);
+  --hud-junction: color-mix(in srgb, var(--hud-accent) var(--hud-junction-alpha), transparent);
+  --hud-edge: color-mix(in srgb, var(--hud-accent) var(--hud-edge-alpha), transparent);
+  --hud-edge-hot: color-mix(in srgb, var(--hud-accent) var(--hud-edge-hot-alpha), transparent);
+  --hud-inset: color-mix(in srgb, var(--hud-accent) var(--hud-inset-alpha), transparent);
+  --hud-glow: color-mix(in srgb, var(--hud-accent) var(--hud-glow-alpha), transparent);
+  --hud-tint: color-mix(in srgb, var(--hud-accent) var(--hud-tint-alpha), transparent);
+
+  /* 1: a thin (1px, unchanged) border that is tinted and lit with the card's
+     own semantic accent, so the panel edge reads as illuminated rather than as
+     a plain divider. */
+  border-color: color-mix(in srgb, var(--hud-accent) 42%, var(--border));
+
+  /* 2 + 3: the technical surface, plus a faint accent tint.
+
+     THE CARD-EDGE DETAIL IS GONE. This used to paint six SHORT accent segments
+     sitting on the exact points where a PCB trace left the card edge, so each
+     read as a lit via / board-edge connector. They were the card-scale half of
+     a routing system, and that system now lives once, at page level, as the
+     global PCB background. A connector with no trace attached to it is just a
+     bright tick on the border, so all six are removed: nothing here follows
+     the perimeter any more.
+
+     What remains is the two soft radial washes below, which are surface depth
+     rather than edges, at their original 100% sizing.
+
+     --hud-edge / --hud-edge-hot are intentionally left declared above: they
+     are the original rail palette, kept so the token set is unchanged and
+     available should a future pass need a hotter tier. Nothing below
+     references them. */
+  background-repeat: no-repeat;
+  background-image:
+    /* technical surface tint. Two soft radial washes, unchanged — these are
+       surface depth, not edges. */
+    radial-gradient(122% 74% at 0% 0%, var(--hud-tint) 0%, transparent 62%),
+    radial-gradient(112% 62% at 100% 100%, var(--hud-tint) 0%, transparent 60%);
+  background-size:
+    100% 100%,
+    100% 100%;
+  background-position:
+    0 0,
+    0 0;
+
+  /* 4: technical surface depth + the ambient accent glow. Tight enough to read
+     as a halo behind the panel, never as a neon aura. */
+  box-shadow:
+    inset 0 1px 0 0 var(--hud-inset),
+    0 0 22px -6px var(--hud-glow);
+
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Explicit accent for sections that do not already carry one. */
+.cyber-glass-cyan {
+  --hud-accent: var(--accent-cyan);
+}
+
+.cyber-glass-violet {
+  --hud-accent: var(--accent-violet);
+}
+
+.cyber-glass-blue {
+  --hud-accent: var(--accent-blue);
+}
+
+.cyber-glass-green {
+  --hud-accent: var(--accent-green);
+}
+
+.cyber-glass-yellow {
+  --hud-accent: var(--accent-yellow);
+}
+
+.cyber-glass:hover {
+  border-color: color-mix(in srgb, var(--hud-accent) 72%, var(--border));
+  box-shadow:
+    inset 0 1px 0 0 color-mix(in srgb, var(--hud-accent) 46%, transparent),
+    0 0 30px -5px color-mix(in srgb, var(--hud-accent) 54%, transparent);
+}
+
+/* 5. CARD-EDGE PCB ROUTING: RETIRED.
+
+   The ::after pseudo-element below used to draw the entire per-card circuit
+   system on its own: 17 primary runs, 5 soft branches, 5 soft pads, 5 junction
+   dots and 6 end nodes, arranged as six route groups (A-F) that each entered
+   through a card edge, took 90-degree turns, and terminated in a solder pad.
+   Together with the six short edge connectors on the host's background above,
+   that made every card a small circuit board.
+
+   It is switched off here, in one place, for every .cyber-glass host on the
+   site. Card-edge routing is now a single page-level system: the global PCB
+   background drawn once by src/components/ui/PcbSectionBackground.tsx. Keeping
+   a second, smaller copy of the same visual language on every card is what
+   turned the portfolio into a wall of glowing circuit borders competing with
+   the content they were meant to sit behind.
+
+   Only routing is retired. Everything that is not routing is untouched: the 1px
+   card border and its accent illumination, the corner brackets, the top accent
+   line, the surface tint, the inset hairline, the ambient glow, the hover
+   states, and every dimension, padding, spacing, grid, flex, width, breakpoint
+   and typographic value. */
+.cyber-glass::after {
+  content: none;
+}
+
+/* Real card content, above the decorative overlays.
+   Every .cyber-glass host is a flex/grid column whose direct children are the
+   card's headings, paragraphs, tags, buttons and links, PLUS a handful of
+   purely decorative overlays (the .hud-bracket corner marks, the top accent
+   hairline, ArchitectureDiagram's .arch-grid wash). Those overlays are
+   `position: absolute` and must keep it, so they are excluded explicitly:
+   a blanket `.cyber-glass > *` would tie on specificity with Tailwind's
+   `.absolute` and win on source order (globals.css imports Tailwind first),
+   knocking every bracket out of its corner and breaking the HUD system.
+
+   z-index on a static element is a no-op, so the content children are
+   positioned in order to clear the absolutely positioned decorative overlays.
+   Excluded overlays stay at z-index 0 in the card's own context.
+
+   Paint order inside the card:
+     content                  z-index 2
+     decorative marks         z-index 0 (absolute)
+     card background + ambient outer glow   (host, z-index 0) */
+.cyber-glass > :not([class*="absolute"]):not([class*="fixed"]) {
+  position: relative;
+  z-index: 2;
+}
+
+/* 6. Tech tags.
+   Resting: existing background + a subtle accent tint on the border plus an
+   inset hairline. Hover: brighter accent border + a small accent glow.
+   Size, padding, font and spacing are untouched. --hud-accent is inherited from
+   the surrounding card, so tags always match their section's accent. */
+.tech-tag {
+  border-color: color-mix(in srgb, var(--hud-accent, var(--accent)) 24%, var(--border));
+  box-shadow: inset 0 1px 0 0 color-mix(in srgb, var(--hud-accent, var(--accent)) 12%, transparent);
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.tech-tag:hover {
+  border-color: color-mix(in srgb, var(--hud-accent, var(--accent)) 62%, transparent);
+  box-shadow:
+    inset 0 1px 0 0 color-mix(in srgb, var(--hud-accent, var(--accent)) 24%, transparent),
+    0 0 10px -2px color-mix(in srgb, var(--hud-accent, var(--accent)) 45%, transparent);
+}
+
+/* 7. HUD corner brackets: REMOVED.
+
+   No component renders a `hud-bracket` element any more — the corner marks were
+   deleted from the card markup and these two rules had no selectors left to
+   style. The `--hud-bracket-alpha` tokens they read went with them. The per-accent
+   border system that remains (`.project-card-cyan`, `.skill-lane-border-cyan`)
+   is a card EDGE colour, not a bracket, and is untouched. */
+
+/* ===========================================================================
+   GLOBAL PCB BACKGROUND
+   ---------------------------------------------------------------------------
+   One circuit-board environment for the WHOLE portfolio, drawn once by
+   src/components/ui/PcbSectionBackground.tsx and mounted once, around every
+   section. It is the Technical Skills board promoted to page level: the same
+   1400x900 module, the same routes, nodes, stroke weights and colours, simply
+   repeated across the page so it reads as one continuous technical environment
+   instead of one board per section. The per-section instances and the card-edge
+   routing the skill lanes used to carry are both retired, so there is a single
+   PCB system on the page and the cards stay plain readable panels.
+
+   The layer is positioned by Tailwind only (absolute inset-0, z-0,
+   pointer-events-none, overflow-hidden) inside the page wrapper's `isolate`
+   context, so it can never enter document flow, affect layout or intercept a
+   click. Content sits on top of it at z-10.
+
+   It is also dialled down to `opacity-20` on the container, and to 0.12 below
+   640px, so the traces read as a far background texture rather than as content:
+   the board is never allowed to compete with the text in front of it. Every
+   section card answers that with its own 85%-opaque glass backdrop
+   (bg-white/85 / bg-slate-950/85 + backdrop-blur-md), so a trace cannot be read
+   through a card's text area at all.
+
+   The art has no viewBox, so one user unit is one CSS pixel and the module is
+   painted at its native 1:1 scale — never stretched, never rescaled.
+
+   Colour is split per theme rather than derived from the card accents: light
+   mode wants pale cyan / muted blue / pale violet on off-white, dark mode wants
+   cyan and violet at full strength. No filter is used, so there is no GPU cost.
+   =========================================================================== */
+.pcb-section {
+  --pcb-cyan: rgba(6, 148, 170, 0.5);
+  --pcb-cyan-soft: rgba(6, 148, 170, 0.3);
+  --pcb-violet: rgba(109, 40, 217, 0.34);
+  --pcb-violet-soft: rgba(109, 40, 217, 0.2);
+  --pcb-steel: rgba(71, 85, 105, 0.24);
+  --pcb-steel-soft: rgba(71, 85, 105, 0.15);
+  --pcb-pad-cyan: rgba(8, 145, 178, 0.85);
+  --pcb-pad-violet: rgba(109, 40, 217, 0.7);
+  --pcb-pad-steel: rgba(71, 85, 105, 0.5);
+   --pcb-pad-ring: rgba(255, 255, 255, 0.6);
+}
+
+/* Dark mode is the reference treatment: saturated cyan and magenta traces on a
+   deep-slate field, bright enough to read as circuitry rather than as a smudge.
+   The hexes are the literal vibrant pair (#00f2ff / #d946ef) at high alpha — the
+   previous muted cyan/violet at 0.62/0.52 disappeared entirely once the layer
+   opacity was factored in. Light mode below keeps its pale, restrained set: the
+   same values on off-white would be unreadable, not "vibrant". */
+.dark .pcb-section {
+  --pcb-cyan: rgba(0, 242, 255, 0.85);
+  --pcb-cyan-soft: rgba(0, 242, 255, 0.5);
+  --pcb-violet: rgba(217, 70, 239, 0.75);
+  --pcb-violet-soft: rgba(217, 70, 239, 0.45);
+  --pcb-steel: rgba(125, 211, 252, 0.45);
+  --pcb-steel-soft: rgba(125, 211, 252, 0.28);
+  --pcb-pad-cyan: rgba(0, 242, 255, 1);
+  --pcb-pad-violet: rgba(217, 70, 239, 0.95);
+  --pcb-pad-steel: rgba(125, 211, 252, 0.7);
+  --pcb-pad-ring: rgba(224, 245, 255, 0.9);
+}
+
+.pcb-section__art {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  /* Confine the board to the page margins.
+
+     The content column is max-w-7xl (80rem = 1280px), centred, so everything
+     between `--pcb-clear` and `100% - --pcb-clear` is where text is set. The
+     mask holds the margin trunks at full strength, ramps them down across an
+     8rem feather, and leaves a faint residual behind the column so the board
+     still registers in the gutters and card gaps instead of leaving a dead
+     stripe down the middle.
+
+     `--pcb-clear` is the half-gutter, and it collapses to 0 on viewports at or
+     below 1280px: there is no margin to fill there, so the mask goes fully
+     transparent and no trace is ever drawn under mobile copy. `max(0px, ...)`
+     keeps the negative gutter from producing an invalid stop, and a percentage
+     inside a custom property resolves against the gradient line at the point
+     of use, not where it is declared.
+
+     The residual is deliberately not 0. Text is not only on the cards — the
+     section eyebrows and intros sit on the bare field — and the layout must
+     not change, so there is no hook for where each string lands. At 0.3 x the
+     0.2 layer opacity a trace behind a paragraph lands around 6% and cannot
+     compete with a glyph; cards at 90% block it outright. */
+  --pcb-clear: max(0px, calc((100% - 80rem) / 2));
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 0,
+    #000 max(0px, calc(var(--pcb-clear) - 8rem)),
+    rgb(0 0 0 / 0.3) var(--pcb-clear),
+    rgb(0 0 0 / 0.3) calc(100% - var(--pcb-clear)),
+    #000 calc(100% - var(--pcb-clear) + 8rem),
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    #000 0,
+    #000 max(0px, calc(var(--pcb-clear) - 8rem)),
+    rgb(0 0 0 / 0.3) var(--pcb-clear),
+    rgb(0 0 0 / 0.3) calc(100% - var(--pcb-clear)),
+    #000 calc(100% - var(--pcb-clear) + 8rem),
+    #000 100%
+  );
+}
+
+/* The glow filter that lit the traces is REMOVED.
+
+   `filter: drop-shadow(0 0 4px rgba(6,182,212,0.5))` was what made the board
+   read as neon rather than as a distant background: every trace carried a cyan
+   halo, and at the higher trace alphas the halos bled into the gaps between
+   letters. Without it the traces are lit purely by their own colour against the
+   deep-slate field, which is what lets them sit behind the text instead of on
+   top of it. The only remaining depth cue is the wide low-opacity bloom pass
+   below, which is now thin enough not to register as a halo. */
+
+/* The board repeats as a 1400x900 module of plain user units on a viewBox-less
+   SVG, so it is already drawn at exactly one user unit per pixel. No scaling
+   happens anywhere in the layer, which is why no non-scaling-stroke is needed:
+   the stroke weights below are the real on-screen pixel widths. */
+.pcb-section path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pcb-cyan { stroke: var(--pcb-cyan); }
+.pcb-cyan-soft { stroke: var(--pcb-cyan-soft); }
+.pcb-violet { stroke: var(--pcb-violet); }
+.pcb-violet-soft { stroke: var(--pcb-violet-soft); }
+.pcb-steel { stroke: var(--pcb-steel); }
+.pcb-steel-soft { stroke: var(--pcb-steel-soft); }
+
+/* Real on-screen pixel widths (the SVG is viewBox-less, so 1 unit = 1px).
+   1px everywhere: the board is a background texture, and anything heavier
+   starts competing with body text rather than sitting behind it. There is no
+   second, wider pass to soften them — one 1px stroke, lit only by its own
+   colour against the deep-slate field. */
+.pcb-section__trace path {
+  stroke-width: 1;
+}
+
+.pcb-section__trace .pcb-cyan-soft,
+.pcb-section__trace .pcb-violet-soft,
+.pcb-section__trace .pcb-steel-soft {
+  stroke-width: 1;
+}
+
+.pcb-pad {
+  stroke: var(--pcb-pad-ring);
+  stroke-width: 0.8;
+}
+
+.pcb-pad-cyan { fill: var(--pcb-pad-cyan); }
+.pcb-pad-violet { fill: var(--pcb-pad-violet); }
+.pcb-pad-steel { fill: var(--pcb-pad-steel); }
+
+/* Small screens: mobile opacity override REMOVED.
+
+   This used to set `opacity: 0.12` on the whole layer below 640px, back when the
+   layer's resting opacity was a dim `opacity-20` container and a small screen
+   cropped into the module's densest band. It was unlayered, so it also outranked
+   the container utility regardless of source order.
+
+   It had to go with the brightening: the traces are now lit via
+   `dark:opacity-65` on the SVG itself and the orbs are 600px glows, so a 0.12
+   multiplier on the container would have collapsed the entire redesign back to
+   near-invisible on phones — the exact "pitch-black and dim" complaint, on half
+   the devices. The board is now one control on the SVG, with no second
+   breakpoint override fighting it. */
+
+/* ---------------------------------------------------------------------------
+   ABOUT: board backdrop REMOVED.
+
+   This used to paint an opaque `var(--background)` ::before at -z-20 over
+   88% of the About section's height, specifically to hide the board's dense
+   top band (y 68-244) where it collided with the greeting and headings. It was
+   the reason About/Overview showed no circuit traces at all while every other
+   section did: the board was there all along, painted over.
+
+   It is retired because the board is no longer strong enough to need hiding.
+   The layer is now a `fixed inset-0 -z-10` viewport canvas at opacity-20 (0.12
+   below 640px), so the traces sit far behind the text instead of under it, and
+   the About copy is protected by the same 85%-opaque glass backdrop every other
+   section card uses. Nothing else changes: the section keeps its own `isolate`,
+   its .grid-pattern and .section-glow at -z-10, and all of its content.
+   ------------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------------
+   TECHNICAL SKILLS: the lanes' own surface, stated explicitly.
+
+   The lanes used to override .cyber-glass to strip the card-edge PCB layer and
+   keep only the two soft radial washes that give the panel its technical depth.
+   Card-edge routing is now retired for every .cyber-glass host at once (see
+   "CARD-EDGE PCB ROUTING: RETIRED" above), so the four lane selectors no longer
+   have to opt out — they simply restate the surface the lanes are made of, at
+   their own 100% sizing, so the washes can never inherit another background's
+   slot and collapse into a hairline.
+
+   Nothing else on the lane is touched: border, corner bracket, top accent
+   line, accent colours, glass highlight, hover behaviour, spacing and content.
+   The circuit artwork now lives once, at page level, behind the whole
+   portfolio. */
+.skill-lane-cyan,
+.skill-lane-violet,
+.skill-lane-blue,
+.skill-lane-green {
+  background-image:
+    radial-gradient(122% 74% at 0% 0%, var(--hud-tint) 0%, transparent 62%),
+    radial-gradient(112% 62% at 100% 100%, var(--hud-tint) 0%, transparent 60%);
+  background-size: 100% 100%, 100% 100%;
+  background-position: 0 0, 0 0;
+  background-repeat: no-repeat, no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cyber-glass,
+  .tech-tag {
+    transition: none;
+  }
+}
