@@ -1,150 +1,30 @@
-
-# Tahir Pathan — Developer Portfolio
-
-A modern, responsive developer portfolio showcasing my skills, independent projects, professional experience, and technical journey as a Full Stack Developer.
-
-Built with Next.js, React, TypeScript, and Tailwind CSS, the portfolio features a technical PCB-inspired background, dark and light themes, and a clean interface designed to highlight both frontend and backend development.
-
-## Overview
-
-This portfolio brings together my development experience, technical skills, and personal projects in one place.
-
-### Highlights
-
-- Responsive layouts for desktop, tablet, and mobile.
-- Dark and light theme support.
-- PCB-inspired circuit background for a technical visual identity.
-- Dedicated sections for About, Technical Skills, Personal Projects, Experience, Education, and Contact.
-- Reusable, typed React components.
-- Interactive UI elements and carefully designed animations.
-- Focus on accessibility, maintainability, and performance.
-
-## Tech Stack
-
-| Category | Technologies |
-|---|---|
-| Framework | Next.js, React |
-| Languages | TypeScript, JavaScript |
-| Styling | Tailwind CSS |
-| UI Development | Reusable components, responsive design |
-| Development Tools | Git, GitHub, ESLint, npm |
-
-## Portfolio Sections
-
-- **About** — Introduction and development focus.
-- **Technical Skills** — Frontend, backend, databases, cloud, and engineering tools.
-- **Personal Projects** — Independent projects and their technologies.
-- **Experience** — Professional development experience.
-- **Education** — Academic background and certifications.
-- **Contact** — Ways to connect with me.
-
-## Featured Personal Projects
-
-### AI Study Assistant
-An AI-powered learning application focused on turning learning materials into useful study resources.
-
-### Chat Application
-A personal project exploring chat interfaces and application development.
-
-### Expense Tracker
-A personal project focused on expense tracking and financial organization.
-
-### Todo App
-A task management application for organizing everyday activities.
-
-### Digital Clock
-A small project exploring time display and interactive UI development.
-
-### Calculator
-A utility application for performing calculations through a simple interface.
-
-> Visit the portfolio to explore the available project details, technology stacks, and demo links.
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
-### Prerequisites
-
-- Node.js (a version compatible with the project dependencies)
-- npm
-
-### Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/Tahir2016/portfolio-tahir.git
-```
-
-Navigate to the project directory:
-
-```bash
-cd portfolio-tahir
-```
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Start the development server:
+First, run the development server:
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Production Build
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-Create a production build:
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-```bash
-npm run build
-```
+## Learn More
 
-Run the production server:
+To learn more about Next.js, take a look at the following resources:
 
-```bash
-npm run start
-```
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-## Project Structure
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-```text
-portfolio-tahir/
-├── public/             # Static assets
-├── src/
-│   ├── app/            # Next.js application
-│   ├── components/     # Reusable UI and section components
-│   ├── data/           # Portfolio content and data
-│   └── utils/          # Shared utilities and types
-├── .gitignore
-├── package.json
-├── tsconfig.json
-└── README.md
-```
+## Deploy on Vercel
 
-## Development Principles
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-- Component-driven architecture
-- Type-safe development with TypeScript
-- Responsive and accessible interfaces
-- Consistent design across dark and light themes
-- Maintainable code and reusable UI patterns
-- Performance-conscious implementation
-
-## About Me
-
-I'm Tahir Pathan, a Full Stack Developer working with modern JavaScript frameworks, backend technologies, databases, and cloud tools to build web applications.
-
-**Technical interests:** React.js, Next.js, TypeScript, Node.js, Python, FastAPI, PostgreSQL, MongoDB, and AWS.
-
-## Connect
-
-- GitHub: [@Tahir2016](https://github.com/Tahir2016)
-- LinkedIn: [https://www.linkedin.com/in/tahirpathan1/](https://www.linkedin.com/)
-
-## License
-
-No license has been specified yet. All rights reserved unless a license is added to this repository.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
