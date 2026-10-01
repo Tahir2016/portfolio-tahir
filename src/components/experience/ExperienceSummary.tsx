@@ -36,21 +36,24 @@ const accents = [
   },
 ] as const;
 
+const dividers = [
+  "border-b border-border md:border-r lg:border-b-0",
+  "border-b border-border lg:border-b-0 lg:border-r",
+  "border-b border-border md:border-b-0 md:border-r",
+  "",
+] as const;
+
 const ExperienceSummary = () => {
   return (
     <div className="cyber-glass relative overflow-hidden rounded-xl border border-border bg-white/85 shadow-lg backdrop-blur-md dark:border-slate-800/50 dark:bg-[#0b101b]/90">
-      <ul className="grid grid-cols-2 lg:grid-cols-4">
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         {experienceSummary.map((item, index) => {
           const Icon = summaryIcons[index];
           const ac = accents[index];
           return (
             <li
               key={item.label}
-              className={`relative flex items-start gap-3 px-4 py-4 transition-colors duration-300 hover:bg-elevated lg:items-center lg:py-3
-                ${index % 2 === 0 ? "border-r border-border lg:border-r-0" : ""}
-                ${index < 2 ? "border-b border-border lg:border-b-0" : ""}
-                ${index < 3 ? "lg:border-r lg:border-border" : ""}
-              `}
+              className={`relative flex min-w-0 items-start gap-3 px-4 py-3.5 transition-colors duration-300 hover:bg-elevated md:py-4 lg:items-center lg:py-3 ${dividers[index]}`}
             >
               {/* Icon — accent-colored */}
               <span
@@ -60,16 +63,16 @@ const ExperienceSummary = () => {
               </span>
 
               {/* Number + title + description */}
-              <div className="min-w-0">
-                <div className="flex items-baseline gap-1.5">
-                  <span className={`font-mono text-[10px] leading-none tracking-[0.14em] ${ac.number}`}>
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
+                  <span className={`shrink-0 font-mono text-[10px] leading-none tracking-[0.14em] ${ac.number}`}>
                     {summaryNumbers[index]}
                   </span>
-                  <span className={`font-mono text-[10.5px] font-semibold uppercase leading-none tracking-[0.12em] ${ac.title}`}>
+                  <span className={`min-w-0 break-words font-mono text-[10.5px] font-semibold uppercase leading-[1.35] tracking-[0.12em] md:leading-none ${ac.title}`}>
                     {item.label}
                   </span>
                 </div>
-                <p className="mt-1 text-[12px] leading-[1.3] text-muted-foreground">
+                <p className="mt-1 min-w-0 text-[12px] leading-[1.45] text-muted-foreground md:leading-[1.3]">
                   {item.text}
                 </p>
               </div>

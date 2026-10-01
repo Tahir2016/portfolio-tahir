@@ -91,7 +91,7 @@ const ExperienceSection = () => {
             Professional Projects
           </SectionLabel>
         </div>
-        <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-3 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {professionalProjects.map((project, index) => (
             <div
               key={project.number}

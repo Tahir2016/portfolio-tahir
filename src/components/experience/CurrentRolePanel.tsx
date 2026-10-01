@@ -24,8 +24,9 @@ const CurrentRolePanel = () => {
         </span>
       </div>
 
-      {/* Role heading */}
-      <h3 className="mt-4 text-[2rem] font-semibold leading-tight tracking-tight text-foreground">
+      {/* Role heading — scales down on narrow screens so the role stays on
+          one line; 2rem from ~460px up, so the desktop size is untouched */}
+      <h3 className="mt-4 text-[clamp(1.5rem,7vw,2rem)] font-semibold leading-tight tracking-tight text-foreground">
         {currentRole.role}
       </h3>
 

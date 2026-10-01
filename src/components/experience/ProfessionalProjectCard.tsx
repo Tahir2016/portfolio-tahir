@@ -86,7 +86,7 @@ const ProfessionalProjectCard = ({ project }: ProfessionalProjectCardProps) => {
         <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground">
           Key Features
         </p>
-        <ul className="mt-1.5 grid grid-cols-2 gap-x-2 gap-y-1">
+        <ul className="mt-1.5 grid grid-cols-1 gap-x-2 gap-y-1 md:grid-cols-2">
           {project.features.map((feature) => (
             <li
               key={feature}
