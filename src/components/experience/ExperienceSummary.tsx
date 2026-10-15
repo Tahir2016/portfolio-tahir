@@ -1,8 +1,8 @@
-import { BarChart2, Box, Briefcase, Users2 } from "lucide-react";
+import { BarChart2, Box, BrainCircuit, Briefcase, Users2, Workflow } from "lucide-react";
 import { experienceSummary } from "@/data/experienceData";
 
-const summaryIcons = [Briefcase, Box, BarChart2, Users2];
-const summaryNumbers = ["01", "02", "03", "04"];
+const summaryIcons = [Briefcase, Box, BarChart2, Users2, BrainCircuit, Workflow];
+const summaryNumbers = ["01", "02", "03", "04", "05", "06"];
 
 /* cyan / violet / green / amber — same identity as capability cards */
 const accents = [
@@ -34,26 +34,42 @@ const accents = [
     number:     "text-accent-yellow/70",
     title:      "text-accent-yellow",
   },
+  {
+    iconBorder: "border-accent-cyan/35",
+    iconBg:     "bg-accent-cyan/10",
+    iconColor:  "text-accent-cyan",
+    number:     "text-accent-cyan/70",
+    title:      "text-accent-cyan",
+  },
+  {
+    iconBorder: "border-accent-violet/35",
+    iconBg:     "bg-accent-violet/10",
+    iconColor:  "text-accent-violet",
+    number:     "text-accent-violet/70",
+    title:      "text-accent-violet",
+  },
 ] as const;
 
 const dividers = [
   "border-b border-border md:border-r lg:border-b-0",
   "border-b border-border lg:border-b-0 lg:border-r",
-  "border-b border-border md:border-b-0 md:border-r",
+  "border-b border-border md:border-r lg:border-b-0 lg:border-r",
+  "border-b border-border md:border-b-0 lg:border-b-0 lg:border-r",
+  "border-b border-border md:border-b-0 md:border-r lg:border-b-0 lg:border-r",
   "",
 ] as const;
 
 const ExperienceSummary = () => {
   return (
     <div className="cyber-glass relative overflow-hidden rounded-xl border border-border bg-white/85 shadow-lg backdrop-blur-md dark:border-slate-800/50 dark:bg-[#0b101b]/90">
-      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6">
         {experienceSummary.map((item, index) => {
           const Icon = summaryIcons[index];
           const ac = accents[index];
           return (
             <li
               key={item.label}
-              className={`relative flex min-w-0 items-start gap-3 px-4 py-3.5 transition-colors duration-300 hover:bg-elevated md:py-4 lg:items-center lg:py-3 ${dividers[index]}`}
+              className={`relative flex min-w-0 items-start gap-3 px-4 py-4 transition-colors duration-300 hover:bg-elevated lg:items-center ${dividers[index]}`}
             >
               {/* Icon — accent-colored */}
               <span
@@ -65,14 +81,14 @@ const ExperienceSummary = () => {
               {/* Number + title + description */}
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
-                  <span className={`shrink-0 font-mono text-[10px] leading-none tracking-[0.14em] ${ac.number}`}>
+                  <span className={`shrink-0 font-mono text-[11px] leading-none tracking-[0.14em] ${ac.number}`}>
                     {summaryNumbers[index]}
                   </span>
-                  <span className={`min-w-0 break-words font-mono text-[10.5px] font-semibold uppercase leading-[1.35] tracking-[0.12em] md:leading-none ${ac.title}`}>
+                  <span className={`min-w-0 break-words font-mono text-[11.5px] font-semibold uppercase leading-[1.35] tracking-[0.12em] md:leading-none ${ac.title}`}>
                     {item.label}
                   </span>
                 </div>
-                <p className="mt-1 min-w-0 text-[12px] leading-[1.45] text-muted-foreground md:leading-[1.3]">
+                <p className="mt-1 min-w-0 text-[13px] leading-[1.45] text-muted-foreground md:leading-[1.3]">
                   {item.text}
                 </p>
               </div>

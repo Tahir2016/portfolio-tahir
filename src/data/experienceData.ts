@@ -22,6 +22,18 @@ export const capabilityHighlights: CapabilityHighlight[] = [
   { id: "02", label: "Scalable Systems", icon: "gauge" },
   { id: "03", label: "Real World Products", icon: "rocket" },
   { id: "04", label: "Clean & Maintainable Architecture", icon: "sparkles" },
+  {
+    id: "05",
+    label: "Generative AI",
+    icon: "generative-ai",
+    description: "LLM integration, prompt engineering, RAG, and AI-powered application features.",
+  },
+  {
+    id: "06",
+    label: "Agentic AI",
+    icon: "agentic-ai",
+    description: "AI agents, tool calling, workflow orchestration, and context/memory management.",
+  },
 ];
 
 export const primaryTechnologies: string[] = [
@@ -43,6 +55,17 @@ export const primaryTechnologies: string[] = [
   "AWS",
   "JWT",
   "CI/CD",
+];
+
+export const aiTechnologies: string[] = [
+  "LLMs",
+  "Prompt Engineering",
+  "RAG",
+  "Embeddings & Vector Search",
+  "LangChain",
+  "LangGraph",
+  "Tool Calling",
+  "AI Agents",
 ];
 
 export const architectureLayers: ArchitectureLayer[] = [
@@ -74,24 +97,38 @@ export const responsibilities: Responsibility[] = [
     title: "Full Stack Development",
     icon: "layers",
     description:
-      "Building and maintaining modern web applications using React, Next.js, Node.js, Express.js, NestJS, Python and Django.",
+      "Building and maintaining modern web applications using React, Next.js, Node.js, and Python.",
   },
   {
     number: "02",
     title: "Backend & APIs",
     icon: "server",
     description:
-      "Designing and developing scalable backend services, authentication systems and robust APIs using Express.js, NestJS, Django and FastAPI.",
+      "Developing scalable REST APIs, authentication systems, and backend services using Express.js, NestJS, FastAPI, and Django.",
   },
   {
     number: "03",
-    title: "Data & Infrastructure",
-    icon: "database",
+    title: "Generative AI & LLMs",
+    icon: "sparkles",
     description:
-      "Working with PostgreSQL, MongoDB and Redis, writing efficient queries and deploying applications using Docker and cloud platforms.",
+      "Integrating LLMs, prompt engineering, RAG pipelines, embeddings, and vector search into AI-powered application workflows.",
   },
   {
     number: "04",
+    title: "Agentic AI & Orchestration",
+    icon: "bot",
+    description:
+      "Developing agentic workflows using LangGraph, tool calling, AI agents, and context or memory management.",
+  },
+  {
+    number: "05",
+    title: "Data & Infrastructure",
+    icon: "database",
+    description:
+      "Working with PostgreSQL, MongoDB, Redis, Docker, and cloud platforms to support reliable applications.",
+  },
+  {
+    number: "06",
     title: "Collaboration & Delivery",
     icon: "users",
     description:
@@ -197,5 +234,13 @@ export const experienceSummary: ExperienceSummaryItem[] = [
   {
     label: "Continuous Growth",
     text: "Always learning and adapting to new technologies",
+  },
+  {
+    label: "Generative AI",
+    text: "LLM integration, RAG, embeddings and vector search",
+  },
+  {
+    label: "Agentic AI",
+    text: "AI agents, tool calling, LangGraph and workflow orchestration",
   },
 ];

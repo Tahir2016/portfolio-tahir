@@ -11,7 +11,7 @@ interface CapabilityCardProps {
 
 const CapabilityCard = ({ id, category, title, description, tags }: CapabilityCardProps) => {
   return (
-    <Card as="article">
+    <Card as="article" className="min-w-0 !p-5 sm:!p-6">
       <div className="flex items-center justify-between">
         <span className="font-mono text-sm text-muted-foreground">{id}</span>
         <span className="flex items-center gap-2">
@@ -22,13 +22,13 @@ const CapabilityCard = ({ id, category, title, description, tags }: CapabilityCa
         </span>
       </div>
 
-      <h3 className="mt-5 text-lg font-semibold tracking-tight text-foreground sm:text-xl">
+      <h3 className="mt-4 text-lg font-semibold tracking-tight text-foreground sm:text-xl">
         {title}
       </h3>
 
-      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{description}</p>
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
 
-      <div className="mt-auto flex flex-wrap gap-2 pt-6">
+      <div className="mt-auto flex flex-wrap gap-2 pt-4">
         {tags.map((tag) => (
           <TechTag key={tag} label={tag} />
         ))}

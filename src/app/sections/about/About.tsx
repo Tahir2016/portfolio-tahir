@@ -34,7 +34,7 @@ export default function AboutSection() {
           style={{ animationDelay: "160ms" }}
         >
           <span aria-hidden className="text-accent">{"//"}</span>
-          React.js → Node.js / Python → PostgreSQL / MongoDB → AWS
+          React.js → Node.js / Python → LLMs &amp; RAG → AI Agents
         </p>
 
         <p
@@ -48,7 +48,7 @@ export default function AboutSection() {
           {aboutData.capabilities.map((capability, index) => (
             <div
               key={capability.id}
-              className="reveal h-full"
+              className={`reveal h-full min-w-0 ${index === 2 ? "sm:col-span-2" : ""}`}
               style={{ animationDelay: `${320 + index * 90}ms` }}
             >
               <CapabilityCard {...capability} />

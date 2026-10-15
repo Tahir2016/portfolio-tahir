@@ -1,4 +1,4 @@
-import { BarChart2, Code2, Settings2, Users2, type LucideIcon } from "lucide-react";
+import { BarChart2, Bot, Code2, Settings2, Sparkles, Users2, type LucideIcon } from "lucide-react";
 import { capabilityHighlights } from "@/data/experienceData";
 import type { CapabilityHighlight } from "@/utils/types";
 
@@ -8,6 +8,8 @@ const icons: Record<CapabilityHighlight["icon"], LucideIcon> = {
   gauge: BarChart2,   // Scalable Systems → performance/chart icon
   rocket: Users2,     // Real World Products → users/community icon
   sparkles: Settings2, // Clean Architecture → settings/system icon
+  "generative-ai": Sparkles,
+  "agentic-ai": Bot,
 };
 
 /* Per-card accent config — cyan / violet / green / amber */
@@ -52,11 +54,31 @@ const cardAccents = [
     label:    "text-accent-yellow/90",
     hover:    "hover:border-accent-yellow/70 hover:shadow-[0_0_24px_-4px_color-mix(in_srgb,var(--accent-yellow)_45%,transparent)]",
   },
+  {
+    /* 05 — Generative AI — CYAN */
+    border:   "border-accent-cyan/40",
+    bg:       "bg-[color-mix(in_srgb,var(--accent-cyan)_8%,var(--card))]",
+    glow:     "shadow-[0_0_18px_-4px_color-mix(in_srgb,var(--accent-cyan)_30%,transparent)]",
+    iconWrap: "border-accent-cyan/30 bg-[color-mix(in_srgb,var(--accent-cyan)_15%,var(--muted))] text-accent-cyan",
+    number:   "text-accent-cyan",
+    label:    "text-accent-cyan/90",
+    hover:    "hover:border-accent-cyan/70 hover:shadow-[0_0_24px_-4px_color-mix(in_srgb,var(--accent-cyan)_45%,transparent)]",
+  },
+  {
+    /* 06 — Agentic AI — VIOLET */
+    border:   "border-accent-violet/40",
+    bg:       "bg-[color-mix(in_srgb,var(--accent-violet)_8%,var(--card))]",
+    glow:     "shadow-[0_0_18px_-4px_color-mix(in_srgb,var(--accent-violet)_30%,transparent)]",
+    iconWrap: "border-accent-violet/30 bg-[color-mix(in_srgb,var(--accent-violet)_15%,var(--muted))] text-accent-violet",
+    number:   "text-accent-violet",
+    label:    "text-accent-violet/90",
+    hover:    "hover:border-accent-violet/70 hover:shadow-[0_0_24px_-4px_color-mix(in_srgb,var(--accent-violet)_45%,transparent)]",
+  },
 ];
 
 const CapabilityHighlights = () => {
   return (
-    <ul className="grid grid-cols-1 gap-2 md:grid-cols-2">
+    <ul className="grid h-full grid-cols-1 gap-2 md:grid-cols-2">
       {capabilityHighlights.map((capability, index) => {
         const Icon = icons[capability.icon];
         const ac = cardAccents[index];
@@ -79,6 +101,11 @@ const CapabilityHighlights = () => {
               <span className={`mt-2.5 font-mono text-[10.5px] uppercase leading-[1.45] tracking-[0.07em] ${ac.label}`}>
                 {capability.label}
               </span>
+              {capability.description && (
+                <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">
+                  {capability.description}
+                </p>
+              )}
             </div>
           </li>
         );

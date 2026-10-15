@@ -12,7 +12,8 @@ export interface CurrentRole {
 export interface CapabilityHighlight {
   id: string;
   label: string;
-  icon: "layers" | "gauge" | "rocket" | "sparkles";
+  icon: "layers" | "gauge" | "rocket" | "sparkles" | "generative-ai" | "agentic-ai";
+  description?: string;
 }
 
 export interface ArchitectureLayer {
@@ -24,7 +25,7 @@ export interface ArchitectureLayer {
 export interface Responsibility {
   number: string;
   title: string;
-  icon: "layers" | "server" | "database" | "users";
+  icon: "layers" | "server" | "database" | "users" | "sparkles" | "bot";
   description: string;
 }
 

@@ -5,7 +5,7 @@ import { currentRole } from "@/data/experienceData";
 
 const CurrentRolePanel = () => {
   return (
-      <article className="cyber-glass group relative flex w-full flex-col overflow-hidden rounded-xl border border-border bg-white/85 p-5 shadow-lg backdrop-blur-md transition-[border-color,background-color] duration-300 hover:border-accent/40 dark:border-slate-800/50 dark:bg-[#0b101b]/90 sm:p-6">
+      <article className="cyber-glass group relative flex h-full w-full flex-col overflow-hidden rounded-xl border border-border bg-white/85 p-5 shadow-lg backdrop-blur-md transition-[border-color,background-color] duration-300 hover:border-accent/40 dark:border-slate-800/50 dark:bg-[#0b101b]/90 sm:p-6">
       <span
         aria-hidden
         className="absolute inset-x-0 top-0 h-px bg-accent/40 transition-colors duration-300 group-hover:bg-accent/70"

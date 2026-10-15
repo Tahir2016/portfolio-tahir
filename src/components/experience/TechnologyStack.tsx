@@ -1,4 +1,4 @@
-import { Cloud, Database, Monitor, Server, type LucideIcon } from "lucide-react";
+import { Bot, Cloud, Database, Monitor, Server, Sparkles, type LucideIcon } from "lucide-react";
 
 interface TechCategory {
   id: string;
@@ -78,11 +78,92 @@ const CATEGORIES: TechCategory[] = [
     pillColor: "text-accent-yellow",
     techs: ["Docker", "AWS", "CI/CD"],
   },
+  {
+    id: "05",
+    label: "Generative AI & LLMs",
+    icon: Sparkles,
+    cardBorder: "border-accent-cyan/30 hover:border-accent-cyan/60",
+    cardBg: "bg-accent-cyan/[0.06]",
+    iconBorder: "border-accent-cyan/35",
+    iconBg: "bg-accent-cyan/10",
+    iconColor: "text-accent-cyan",
+    labelColor: "text-accent-cyan",
+    pillBorder: "border-accent-cyan/25",
+    pillBg: "bg-accent-cyan/[0.07]",
+    pillColor: "text-accent-cyan",
+    techs: [
+      "LLMs",
+      "OpenAI API",
+      "Google Gemini API",
+      "Prompt Engineering",
+      "RAG",
+      "Embeddings & Vector Search",
+    ],
+  },
+  {
+    id: "06",
+    label: "Agentic AI",
+    icon: Bot,
+    cardBorder: "border-accent-violet/30 hover:border-accent-violet/60",
+    cardBg: "bg-accent-violet/[0.06]",
+    iconBorder: "border-accent-violet/35",
+    iconBg: "bg-accent-violet/10",
+    iconColor: "text-accent-violet",
+    labelColor: "text-accent-violet",
+    pillBorder: "border-accent-violet/25",
+    pillBg: "bg-accent-violet/[0.07]",
+    pillColor: "text-accent-violet",
+    techs: [
+      "AI Agents & Workflows",
+      "LangGraph",
+      "Tool Calling",
+      "Agent Orchestration",
+      "Memory & Context Management",
+      "Guardrails",
+    ],
+  },
 ];
+
+const renderCategory = (cat: TechCategory) => {
+  const Icon = cat.icon;
+  return (
+    <div
+      key={cat.id}
+      className={`h-full min-w-0 rounded-lg border p-3 transition-[border-color,box-shadow] duration-200 ${cat.cardBorder} ${cat.cardBg}`}
+    >
+      {/* category header row */}
+      <div className="flex items-center gap-2.5">
+        <span
+          className={`grid size-8 shrink-0 place-items-center rounded-md border ${cat.iconBorder} ${cat.iconBg} ${cat.iconColor}`}
+        >
+          <Icon aria-hidden className="size-4" />
+        </span>
+        <span className={`min-w-0 break-words font-mono text-[11.5px] font-semibold uppercase tracking-[0.14em] ${cat.labelColor}`}>
+          {cat.label}
+        </span>
+        <span className={`ml-auto font-mono text-[9px] tracking-[0.1em] opacity-50 ${cat.labelColor}`}>
+          {cat.id}
+        </span>
+      </div>
+
+      {/* tech pills */}
+      <div className="mt-2 flex flex-wrap gap-1">
+        {cat.techs.map((tech) => (
+          <span
+            key={tech}
+            className={`inline-flex max-w-full items-center break-words rounded border px-2 py-0.5 font-mono text-[10.5px] leading-[1.6] transition-[border-color] duration-150 ${cat.pillBorder} ${cat.pillBg} ${cat.pillColor}`}
+          >
+            {tech}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const TechnologyStack = () => {
   return (
-    <article className="cyber-glass group relative flex w-full flex-col overflow-hidden rounded-xl border border-border bg-white/85 p-5 shadow-lg backdrop-blur-md transition-[border-color] duration-300 hover:border-accent/40 dark:border-slate-800/50 dark:bg-[#0b101b]/90 sm:p-6">
+    <article className="cyber-glass group relative flex h-full w-full flex-col overflow-hidden rounded-xl border border-border bg-white/85 p-5 shadow-lg backdrop-blur-md transition-[border-color] duration-300 hover:border-accent/40 dark:border-slate-800/50 dark:bg-[#0b101b]/90 sm:p-6">
       <span aria-hidden className="absolute inset-x-0 top-0 h-px bg-accent/40 transition-colors duration-300 group-hover:bg-accent/70" />
 
       {/* panel header */}
@@ -93,44 +174,12 @@ const TechnologyStack = () => {
         </span>
       </div>
 
-      {/* four category cards — height is purely content-driven */}
+      {/* Category cards — height is purely content-driven */}
       <div className="mt-3 flex flex-col gap-2">
-        {CATEGORIES.map((cat) => {
-          const Icon = cat.icon;
-          return (
-            <div
-              key={cat.id}
-              className={`rounded-lg border p-3 transition-[border-color,box-shadow] duration-200 ${cat.cardBorder} ${cat.cardBg}`}
-            >
-              {/* category header row */}
-              <div className="flex items-center gap-2.5">
-                <span
-                  className={`grid size-8 shrink-0 place-items-center rounded-md border ${cat.iconBorder} ${cat.iconBg} ${cat.iconColor}`}
-                >
-                  <Icon aria-hidden className="size-4" />
-                </span>
-                <span className={`font-mono text-[11.5px] font-semibold uppercase tracking-[0.14em] ${cat.labelColor}`}>
-                  {cat.label}
-                </span>
-                <span className={`ml-auto font-mono text-[9px] tracking-[0.1em] opacity-50 ${cat.labelColor}`}>
-                  {cat.id}
-                </span>
-              </div>
-
-              {/* tech pills */}
-              <div className="mt-2 flex flex-wrap gap-1">
-                {cat.techs.map((tech) => (
-                  <span
-                    key={tech}
-                    className={`inline-flex items-center rounded border px-2 py-0.5 font-mono text-[10.5px] leading-[1.6] transition-[border-color] duration-150 ${cat.pillBorder} ${cat.pillBg} ${cat.pillColor}`}
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-          );
-        })}
+        {CATEGORIES.slice(0, 4).map(renderCategory)}
+        <div className="grid min-w-0 grid-cols-1 items-stretch gap-2 sm:grid-cols-2">
+          {CATEGORIES.slice(4).map(renderCategory)}
+        </div>
       </div>
     </article>
   );

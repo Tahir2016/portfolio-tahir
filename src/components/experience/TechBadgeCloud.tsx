@@ -1,4 +1,4 @@
-import { primaryTechnologies } from "@/data/experienceData";
+import { aiTechnologies, primaryTechnologies } from "@/data/experienceData";
 
 const techAccentMap: Record<string, string> = {
   "React.js": "text-[#61DAFB]",
@@ -159,21 +159,33 @@ const TechIcon = ({ tech, className }: { tech: string; className?: string }) => 
   }
 };
 
+const renderBadges = (technologies: string[]) => (
+  <ul className="flex flex-wrap gap-1.5">
+    {technologies.map((technology) => {
+      const iconColor = techAccentMap[technology] ?? "text-accent/70";
+      return (
+        <li key={technology}>
+          <span className="inline-flex items-center gap-2 rounded border border-border bg-muted px-2.5 py-1.5 font-mono text-[12px] leading-none text-foreground transition-[border-color,background-color,transform] duration-200 hover:-translate-y-px hover:border-accent/50 hover:bg-elevated">
+            <TechIcon tech={technology} className={`size-[18px] ${iconColor}`} />
+            {technology}
+          </span>
+        </li>
+      );
+    })}
+  </ul>
+);
+
 const TechBadgeCloud = () => {
   return (
-    <ul className="flex flex-wrap gap-1.5">
-      {primaryTechnologies.map((technology) => {
-        const iconColor = techAccentMap[technology] ?? "text-accent/70";
-        return (
-          <li key={technology}>
-            <span className="inline-flex items-center gap-2 rounded border border-border bg-muted px-2.5 py-1.5 font-mono text-[12px] leading-none text-foreground transition-[border-color,background-color,transform] duration-200 hover:-translate-y-px hover:border-accent/50 hover:bg-elevated">
-              <TechIcon tech={technology} className={`size-[18px] ${iconColor}`} />
-              {technology}
-            </span>
-          </li>
-        );
-      })}
-    </ul>
+    <div className="space-y-3">
+      {renderBadges(primaryTechnologies)}
+      <div className="border-t border-border pt-3">
+        <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.16em] text-accent">
+          Generative AI &amp; Agentic AI
+        </p>
+        {renderBadges(aiTechnologies)}
+      </div>
+    </div>
   );
 };
 

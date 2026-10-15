@@ -25,13 +25,8 @@ const ExperienceSection = () => {
           <SectionLabel index="04">Experience</SectionLabel>
         </div>
 
-        {/* ── 2. Three-column hero ── */}
-        {/*
-          Force 3 columns at lg with explicit fr fractions.
-          md shows 2 cols (left+center), right wraps below.
-          sm/mobile: single column.
-        */}
-        <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,24fr)_minmax(0,43fr)_minmax(0,33fr)] lg:gap-5 lg:items-end">
+        {/* ── 2. Intro + experience panels ── */}
+        <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:items-stretch lg:gap-5">
 
           {/* ── LEFT: intro + capability tiles ── */}
           <div
@@ -44,38 +39,40 @@ const ExperienceSection = () => {
               <span className="block text-accent">Products</span>
             </h2>
 
-            <p className="mt-3 text-[15px] leading-[1.6] text-muted-foreground">
-              I have been working as a Full Stack Developer for 3+ years,
-              building and shipping production grade applications across web
-              platforms, with a strong focus on clean architecture, performance,
-              and user experience.
+            <p className="mt-3 text-base leading-[1.6] text-muted-foreground">
+              I have 3+ years of professional experience building and shipping
+              production-grade Full Stack applications. Alongside this work, I
+              continue developing my skills in Generative AI and Agentic AI,
+              including LLM integrations, RAG, and agent workflows.
             </p>
 
-            <div className="mt-5">
+            <div className="mt-5 flex-1">
               <CapabilityHighlights />
             </div>
           </div>
 
-          {/* ── CENTER: current role card ── */}
-          <div
-            className="reveal flex min-w-0"
-            style={{ animationDelay: "100ms" }}
-          >
-            <CurrentRolePanel />
-          </div>
+          <div className="grid min-w-0 gap-4 sm:grid-cols-2 sm:items-stretch lg:gap-5">
+            {/* ── Experience card ── */}
+            <div
+              className="reveal flex min-w-0"
+              style={{ animationDelay: "100ms" }}
+            >
+              <CurrentRolePanel />
+            </div>
 
-          {/* ── RIGHT: technology stack panel ── */}
-          <div
-            className="reveal flex min-w-0"
-            style={{ animationDelay: "160ms" }}
-          >
-            <TechnologyStack />
+            {/* ── Technology stack panel ── */}
+            <div
+              className="reveal flex min-w-0"
+              style={{ animationDelay: "160ms" }}
+            >
+              <TechnologyStack />
+            </div>
           </div>
         </div>
       </Container>
 
       {/* ── 3. Key responsibilities ── */}
-      <Container className="mt-5">
+      <Container className="mt-8">
         <div className="reveal">
           <SectionLabel>Key Responsibilities</SectionLabel>
         </div>
@@ -85,7 +82,7 @@ const ExperienceSection = () => {
       </Container>
 
       {/* ── 4. Professional projects ── */}
-      <Container className="mt-5">
+      <Container className="mt-8">
         <div className="reveal">
           <SectionLabel trailing="Real-world products built during my professional experience">
             Professional Projects
