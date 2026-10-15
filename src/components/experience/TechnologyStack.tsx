@@ -139,7 +139,14 @@ const renderCategory = (cat: TechCategory) => {
           <Icon aria-hidden className="size-4" />
         </span>
         <span className={`min-w-0 break-words font-mono text-[11.5px] font-semibold uppercase tracking-[0.14em] ${cat.labelColor}`}>
-          {cat.label}
+          {cat.id === "05" ? (
+            <>
+              <span className="inline-block whitespace-nowrap text-[10px] tracking-[0.08em]">Generative</span>{" "}
+              AI &amp; LLMs
+            </>
+          ) : (
+            cat.label
+          )}
         </span>
         <span className={`ml-auto font-mono text-[9px] tracking-[0.1em] opacity-50 ${cat.labelColor}`}>
           {cat.id}
@@ -147,11 +154,11 @@ const renderCategory = (cat: TechCategory) => {
       </div>
 
       {/* tech pills */}
-      <div className="mt-2 flex flex-wrap gap-1">
+      <div className={`mt-2 flex flex-wrap ${cat.id === "05" ? "gap-1.5" : "gap-1"}`}>
         {cat.techs.map((tech) => (
           <span
             key={tech}
-            className={`inline-flex max-w-full items-center break-words rounded border px-2 py-0.5 font-mono text-[10.5px] leading-[1.6] transition-[border-color] duration-150 ${cat.pillBorder} ${cat.pillBg} ${cat.pillColor}`}
+            className={`inline-flex max-w-full items-center break-words rounded border px-2 py-0.5 font-mono ${cat.id === "05" ? "text-[11px]" : "text-[10.5px]"} leading-[1.6] transition-[border-color] duration-150 ${cat.pillBorder} ${cat.pillBg} ${cat.pillColor}`}
           >
             {tech}
           </span>
